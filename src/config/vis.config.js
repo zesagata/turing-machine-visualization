@@ -35,7 +35,9 @@
 
 let optionsgraph = JSON.parse(JSON.stringify(options));
 optionsgraph.layout.randomSeed = 25;
- 
+
+let optionsfac = JSON.parse(JSON.stringify(options));
+optionsfac.layout.randomSeed = 30;
 var events = {
     select: function(event) {
         var { nodes, edges } = event;
@@ -46,5 +48,6 @@ var events = {
 module.exports = {
     options,
     events,
-    optionsgraph
+    optionsgraph,
+    optionsfac
 }

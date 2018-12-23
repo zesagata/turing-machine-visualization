@@ -1,4 +1,4 @@
-var second = 0.5;
+var second = 2;
 
 module.exports = {
     time:second*1000

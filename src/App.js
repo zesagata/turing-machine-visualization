@@ -38,6 +38,9 @@ class App extends Component {
       }else if(data.operation == "mult"){
         state.result = this.oprt.mult(Number(data.x1),Number(data.x2));
         state.currOperation = "mult";
+      }else if(data.operation == "fac"){
+        state.result = this.oprt.fac(Number(data.x1));
+        state.currOperation = "fac";
       }
       state.startAnimate="true";
       state.i = 0;
@@ -77,7 +80,7 @@ class App extends Component {
               }
               return item;
             })
-          }else if(this.state.currOperation == "mult"){
+          }else if(this.state.currOperation == "mult" || this.state.currOperation == "fac"){
             currStack = this.state.result[this.state.i]; 
             let {i,j,k,tape1,tape2,tape3} = currStack;
             let _inpT1 = (tape1.charAt(i) === "") ? "B":tape1.charAt(i);
@@ -98,7 +101,6 @@ class App extends Component {
                 console.log(item.input);
                 console.log(inputAll)
                 if(item.input.toUpperCase() === inputAll.toUpperCase()){
-                  console.log("ADA YANG SAMA")
                   tempIdSelected.push(item.id);
                 }
               }
@@ -114,7 +116,6 @@ class App extends Component {
             return state;
           })
         }else{
-          console.log("Animation END----------------");
           temp.nodes = temp.nodes.map(item=>{
             item.color = "#EFF3FF";
             return item;
@@ -142,7 +143,7 @@ class App extends Component {
       if(this.state.currOperation == "add" || this.state.currOperation == "sub"){
         currStack = this.state.result[this.state.i-1].split("-");
         result = <span className="logtext">{`${currStack[0]}`}</span>
-      }else if(this.state.currOperation == "mult"){
+      }else if(this.state.currOperation == "mult" || this.state.currOperation == "fac"){
         currStack = this.state.result[this.state.i-1];
         result = <span className="logtext">{`${currStack.state}`}</span>
       }
@@ -153,7 +154,7 @@ class App extends Component {
       if(this.state.currOperation == "add" || this.state.currOperation == "sub"){
         currStack = this.state.result[this.state.result.length-1].split("-");
         result = <span className="logtext">{`${currStack[0]}`}</span>
-      }else if(this.state.currOperation == "mult"){
+      }else if(this.state.currOperation == "mult"  || this.state.currOperation == "fac"){
         currStack = this.state.result[this.state.result.length-1];
         result = <span className="logtext">{`${currStack.state}`}</span>
       }
@@ -168,7 +169,7 @@ class App extends Component {
         currStack = this.state.result[this.state.i-1].split("-");
         let curr = (currStack[1].charAt(currStack[2]) == "") ? "B" : currStack[1].charAt(currStack[2]);
         result = <span className="logtext">{`${curr}`}</span>
-      }else if(this.state.currOperation == "mult"){
+      }else if(this.state.currOperation == "mult"  || this.state.currOperation == "fac"){
         currStack = this.state.result[this.state.i-1];
         let {i,j,k,tape1,tape2,tape3} = currStack;
         let _inpT1 = (tape1.charAt(i) === "") ? "B":tape1.charAt(i);
@@ -185,7 +186,7 @@ class App extends Component {
         currStack = this.state.result[this.state.result.length-1].split("-");
         let curr = (currStack[1].charAt(currStack[2]) == "") ? "B" : currStack[1].charAt(currStack[2]);
         result = <span className="logtext">{`${curr}`}</span>
-      }else if(this.state.currOperation == "mult"){
+      }else if(this.state.currOperation == "mult"  || this.state.currOperation == "fac"){
         currStack = this.state.result[this.state.result.length-1];
         let {i,j,k,tape1,tape2,tape3} = currStack;
         let _inpT1 = (tape1.charAt(i) === "") ? "B":tape1.charAt(i);
@@ -244,6 +245,9 @@ class App extends Component {
         currStack = this.state.result[this.state.result.length-1];
       }
       let spanCurrTape = [];
+
+      currStack.tape1 = "B"+currStack.tape1+"B";
+      currStack.i = currStack.i + 1;
       for(let c = 0 ; c < currStack.tape1.length ; c++){
         if(c != currStack.i){
           spanCurrTape.push(<span key={c} className="logtext">{`${currStack.tape1.charAt(c)}`}</span>)
@@ -263,6 +267,9 @@ class App extends Component {
         currStack = this.state.result[this.state.result.length-1];
       }
       let spanCurrTape = [];
+
+      currStack.tape2 = "B"+currStack.tape2+"B";
+      currStack.j = currStack.j + 1;
       for(let c = 0 ; c < currStack.tape2.length ; c++){
         if(c != currStack.j){
           spanCurrTape.push(<span key={c} className="logtext">{`${currStack.tape2.charAt(c)}`}</span>)
@@ -282,6 +289,9 @@ class App extends Component {
         currStack = this.state.result[this.state.result.length-1];
       }
       let spanCurrTape = [];
+
+      currStack.tape3 = "B"+currStack.tape3+"B";
+      currStack.k = currStack.k + 1;
       for(let c = 0 ; c < currStack.tape3.length ; c++){
         if(c != currStack.k){
           spanCurrTape.push(<span key={c} className="logtext">{`${currStack.tape3.charAt(c)}`}</span>)
@@ -305,7 +315,7 @@ class App extends Component {
             <label>{`Final Tape  : ${lastStack[1].toUpperCase()}`}</label>
           </div>
         )
-      }else if(this.state.currOperation == "mult"){
+      }else if(this.state.currOperation == "mult"  || this.state.currOperation == "fac"){
         lastStack = this.state.result[this.state.result.length - 1];
         return(
           <div className="result">
@@ -393,6 +403,34 @@ class App extends Component {
               { <br/>}
             </div>
           </div> : null}
+
+           {(this.state.currOperation=="fac") ? 
+            <div className={(this.state.currOperation == 'fac') ? "showgraph" : "hidden"}>
+              <div className="up">
+                <Graph 
+                  getNetwork={network => this.setState(state=>{state.network.fac = network; return state})} 
+                  graph={this.state.graphState.fac} 
+                  options={GrapConfig.optionsfac} 
+                  events={GrapConfig.events} />
+              </div>
+              <div className="bot">
+                {<label className="logtext">Current State   : </label>}
+                {this.renderCurrState()}
+                {<br/>}
+                {<label className="logtext">Current Input   : </label>}
+                {this.renderCurrentInput()}
+                { <br/>}
+                {<label className="logtext">Current Tape 1  : </label>}
+                {this.renderCurrentTape1()}
+                { <br/>}
+                {<label className="logtext">Current Tape 2  : </label>}
+                {this.renderCurrentTape2()}
+                { <br/>}
+                {<label className="logtext">Current Tape 3  : </label>}
+                {this.renderCurrentTape3()}
+                { <br/>}
+              </div>
+            </div> : null}
 
           <div className={(this.state.currOperation == undefined) ? "show" : "hidden"}>
             <label>Turing Machine Visualization</label>

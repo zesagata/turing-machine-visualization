@@ -65,10 +65,14 @@ class App extends Component {
           if(this.state.currOperation == "add" || this.state.currOperation == "sub" || this.state.currOperation == "div"){
             currStack = this.state.result[this.state.i].split("-");   //"state-tape-i" -> [state,tape,i]
             temp.nodes = temp.nodes.map(item=>{
-              if(item.label.toLowerCase() === currStack[0]){
-                item.color = "#D0CD94";
+              if(!item.final){
+                if(item.label.toLowerCase() === currStack[0]){
+                  item.color = "#D0CD94";
+                }else{
+                  item.color = "#EFF3FF";
+                }
               }else{
-                item.color = "#EFF3FF";
+                item.color = "#ff4f5d";
               }
               return item;
             })
@@ -91,10 +95,14 @@ class App extends Component {
             let _inpT3 = (tape3.charAt(k) === "") ? "B":tape3.charAt(k);
             let inputAll = _inpT1+_inpT2+_inpT3;
             temp.nodes = temp.nodes.map(item=>{
-              if(item.label.toLowerCase() === currStack.state){
-                item.color = "#D0CD94";
+              if(!item.final){
+                if(item.label.toLowerCase() === currStack[0]){
+                  item.color = "#D0CD94";
+                }else{
+                  item.color = "#EFF3FF";
+                }
               }else{
-                item.color = "#EFF3FF";
+                item.color = "#ff4f5d";
               }
               return item;
             })

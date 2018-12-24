@@ -5,7 +5,6 @@ import GrapConfig from './config/vis.config.js';
 import StateConfig from './config/state.config.js';
 import Form from './Component/Form.js';
 import Operation from './algorithm/Operation.js';
-import {time} from './config/delay.config.js';
 
 class App extends Component {
 
@@ -21,7 +20,8 @@ class App extends Component {
       network:{
         add:undefined
       },
-      history:null
+      history:null,
+      delay:0.5
     }
     this.oprt = new Operation();
   }
@@ -41,6 +41,9 @@ class App extends Component {
       }else if(data.operation == "fac"){
         state.result = this.oprt.fac(Number(data.x1));
         state.currOperation = "fac";
+      }else if(data.operation == "div"){
+        state.result = this.oprt.div(Number(data.x1),Number(data.x2));
+        state.currOperation = "div";
       }
       state.startAnimate="true";
       state.i = 0;
@@ -59,7 +62,7 @@ class App extends Component {
         if(this.state.i < this.state.result.length){
           let currStack;
           let tempIdSelected;
-          if(this.state.currOperation == "add" || this.state.currOperation == "sub"){
+          if(this.state.currOperation == "add" || this.state.currOperation == "sub" || this.state.currOperation == "div"){
             currStack = this.state.result[this.state.i].split("-");   //"state-tape-i" -> [state,tape,i]
             temp.nodes = temp.nodes.map(item=>{
               if(item.label.toLowerCase() === currStack[0]){
@@ -131,7 +134,7 @@ class App extends Component {
             return state;
           })
         }
-      },time)
+      },this.state.delay*1000)
     }
 
   }
@@ -140,7 +143,7 @@ class App extends Component {
     if(this.state.i < this.state.result.length && this.state.i != 0){
       let currStack;
       let result;
-      if(this.state.currOperation == "add" || this.state.currOperation == "sub"){
+      if(this.state.currOperation == "add" || this.state.currOperation == "sub" || this.state.currOperation == "div"){
         currStack = this.state.result[this.state.i-1].split("-");
         result = <span className="logtext">{`${currStack[0]}`}</span>
       }else if(this.state.currOperation == "mult" || this.state.currOperation == "fac"){
@@ -151,7 +154,7 @@ class App extends Component {
     }else if(this.state.i == this.state.result.length){
       let currStack;
       let result;
-      if(this.state.currOperation == "add" || this.state.currOperation == "sub"){
+      if(this.state.currOperation == "add" || this.state.currOperation == "sub" || this.state.currOperation == "div"){
         currStack = this.state.result[this.state.result.length-1].split("-");
         result = <span className="logtext">{`${currStack[0]}`}</span>
       }else if(this.state.currOperation == "mult"  || this.state.currOperation == "fac"){
@@ -165,7 +168,7 @@ class App extends Component {
     if(this.state.i < this.state.result.length && this.state.i != 0){
       let currStack;
       let result;
-      if(this.state.currOperation == "add" || this.state.currOperation == "sub"){
+      if(this.state.currOperation == "add" || this.state.currOperation == "sub" || this.state.currOperation == "div"){
         currStack = this.state.result[this.state.i-1].split("-");
         let curr = (currStack[1].charAt(currStack[2]) == "") ? "B" : currStack[1].charAt(currStack[2]);
         result = <span className="logtext">{`${curr}`}</span>
@@ -182,7 +185,7 @@ class App extends Component {
     }else if(this.state.i == this.state.result.length){
       let currStack;
       let result;
-      if(this.state.currOperation == "add" || this.state.currOperation == "sub"){
+      if(this.state.currOperation == "add" || this.state.currOperation == "sub" || this.state.currOperation == "div"){
         currStack = this.state.result[this.state.result.length-1].split("-");
         let curr = (currStack[1].charAt(currStack[2]) == "") ? "B" : currStack[1].charAt(currStack[2]);
         result = <span className="logtext">{`${curr}`}</span>
@@ -206,31 +209,16 @@ class App extends Component {
       }else if(this.state.i == this.state.result.length){
         currStack = this.state.result[this.state.result.length-1].split("-");
       }
+      currStack[1] = "B"+currStack[1]+"B"
       let spanCurrTape = [];
+      currStack[2] = Number(currStack[2]) + 1;
+      console.log(currStack[1])
+      console.log(currStack[2])
       for(let i = 0 ; i < currStack[1].length ; i++){
         if(i != currStack[2]){
           spanCurrTape.push(<span key={i} className="logtext">{`${currStack[1].charAt(i)}`}</span>)
         }else{
           spanCurrTape.push(<span key={i} className="logtext hightlighted">{`${currStack[1].charAt(i)}`}</span>)
-        }
-      }
-      return spanCurrTape;
-    }
-  }
-  renderCurrentTape1 = () =>{
-    if(this.state.i != 0){
-      let currStack;
-      if(this.state.i < this.state.result.length && this.state.i != 0){
-        currStack = this.state.result[this.state.i-1];
-      }else if(this.state.i == this.state.result.length){
-        currStack = this.state.result[this.state.result.length-1];
-      }
-      let spanCurrTape = [];
-      for(let c = 0 ; c < currStack.tape1.length ; c++){
-        if(c != currStack.i){
-          spanCurrTape.push(<span key={c} className="logtext">{`${currStack.tape1.charAt(c)}`}</span>)
-        }else{
-          spanCurrTape.push(<span key={c} className="logtext hightlighted">{`${currStack.tape1.charAt(c)}`}</span>)
         }
       }
       return spanCurrTape;
@@ -307,7 +295,7 @@ class App extends Component {
   renderResult = () =>{
     if(this.state.currOperation != undefined){
       let lastStack;
-      if(this.state.currOperation == "add" || this.state.currOperation == "sub"){
+      if(this.state.currOperation == "add" || this.state.currOperation == "sub" || this.state.currOperation == "div"){
         lastStack = this.state.result[this.state.result.length - 1].split("-");
         return(
           <div className="result">
@@ -327,6 +315,17 @@ class App extends Component {
         )
       }
     }
+  }
+
+  changeDelay = (event) => {
+      
+    const name = event.target.name;
+    const value = event.target.value;
+    this.setState(state=>{
+        state[name] = value;
+        return state;
+    })
+  
   }
 
   render() {
@@ -432,6 +431,27 @@ class App extends Component {
               </div>
             </div> : null}
 
+            {(this.state.currOperation=="div") ? 
+              <div className={(this.state.currOperation == 'div') ? "showgraph" : "hidden"}>
+                <div className="up">
+                  <Graph 
+                    getNetwork={network => this.setState(state=>{state.network.div = network; return state})} 
+                    graph={this.state.graphState.div} 
+                    options={GrapConfig.options} 
+                    events={GrapConfig.events} />
+                </div>
+                <div className="bot">
+                  {<label className="logtext">Current State   : </label>}
+                  {this.renderCurrState()}
+                  {<br/>}
+                  {<label className="logtext">Current Input   : </label>}
+                  {this.renderCurrentInput()}
+                  { <br/>}
+                  {<label className="logtext">Current Tape   : </label>}
+                  {this.renderCurrTape()}
+                </div>
+              </div> : null}
+
           <div className={(this.state.currOperation == undefined) ? "show" : "hidden"}>
             <label>Turing Machine Visualization</label>
           </div>
@@ -439,6 +459,18 @@ class App extends Component {
         </div>
         <div className="inputcontainer flex">
           <Form isAnimate={this.state.startAnimate} onSubmitForm={this.onSubmitForm.bind(this)}></Form>
+          {(this.state.startAnimate) ? null : <div style={{width:'80%',display:'flex',alignItems:'center',flexDirection:'column',marginBottom:'20px'}}>
+            <p style={{textAlign:'center'}}>Delay Animation (in Second)</p>
+            <input  type="number" 
+                      name="delay"
+                      min="0.1"
+                      placeholder="Delay Animation (in Second)"
+                      className="input-delay"
+                      value={this.state.delay}
+                      onChange={this.changeDelay}
+                      
+              />
+          </div>}
           {(this.state.history != null && (this.state.startAnimate == false)) ? this.renderResult() : null}
         </div>
       </div>

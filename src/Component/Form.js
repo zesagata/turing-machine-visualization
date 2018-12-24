@@ -9,7 +9,8 @@ class Form extends Component {
               x1:'',
               x2:'',
               operation:'add'
-          }
+          },
+          lengkap:true
       }
   }
 
@@ -24,8 +25,37 @@ class Form extends Component {
     
   }
 
+  _tidakLengkap = () =>{
+      this.setState(state=>{
+          state.lengkap = false;
+          return state;
+      })
+  }
+
   formSubmitHandler = () => {
-    this.props.onSubmitForm(this.state.formControls);
+      if(this.state.formControls.operation != "fac"){
+        if(this.state.formControls.x1.length != 0 && this.state.formControls.x2.length != 0){
+            this.setState(state=>{
+                state.label = true;
+            },()=>{
+                this.props.onSubmitForm(this.state.formControls);
+            })
+        }else{
+            console.log("Tidak lengkap")
+            this._tidakLengkap();
+        }
+      }else{
+        if(this.state.formControls.x1.length != 0){    
+            this.setState(state=>{
+                state.label = true;
+            },()=>{
+                this.props.onSubmitForm(this.state.formControls);
+            })
+        }else{
+            console.log("Tidak lengkap")
+            this._tidakLengkap();
+        }
+      }
   }
 
   render() {
@@ -72,8 +102,9 @@ class Form extends Component {
             </select>
             {(this.props.isAnimate) ? 
             <button onClick={this.formSubmitHandler} className="input-button" disabled>Hitung</button > : 
-            <button onClick={this.formSubmitHandler} className="input-button">Hitung</button>}
+            <button onClick={this.formSubmitHandler} className="input-button">Calculate</button>}
         </div>
+            {(this.state.lengkap) ? null : <label>Input tidak lengkap</label>}
       </div>
     );
   }

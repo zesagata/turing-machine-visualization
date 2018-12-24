@@ -127,10 +127,66 @@ var fac = {
     ] 
 }
 
+var div = {
+    nodes:[
+        {id: 0, label: 'Q0',color:'#EFF3FF'},
+        {id: 1, label: 'Q1',color:'#EFF3FF'},
+        {id: 2, label: 'Q2',color:'#EFF3FF'},
+        {id: 3, label: 'Q3',color:'#EFF3FF'},
+        {id: 4, label: 'Q4',color:'#EFF3FF'},
+        {id: 5, label: 'Q5',color:'#EFF3FF'},
+        {id: 6, label: 'Q6',color:'#EFF3FF'},
+        {id: 7, label: 'Q7',color:'#EFF3FF'},
+        {id: 8, label: 'Q8',color:'#EFF3FF'},
+        {id: 9, label: 'Q9',color:'#EFF3FF'},
+    ],
+    edges:[
+        {from: 0, to: 1,label:"1/B,R"},
+        {from: 0, to: 8,label:"C/B,R"},
+
+        {from: 1, to: 1,label:"1/1,R"},
+        {from: 1, to: 2,label:"C/C,R"},
+
+
+        {from: 2, to: 2,label:"1/1,R"},
+        {from: 2, to: 2,label:"X/X,R"},
+        {from: 2, to: 3,label:"0/0,L"},
+        {from: 2, to: 3,label:"B/B,L"},
+
+        {from: 3, to: 4,label:"1/X,L"},
+        {from: 3, to: 3,label:"X/X,L"},
+
+
+        {from: 4, to: 6,label:"1/1,L"},
+        {from: 4, to: 5,label:"C/C,R"},
+
+
+        {from: 5, to: 5,label:"X/1,R"},
+        {from: 5, to: 6,label:"B/0,L"},
+        {from: 5, to: 5,label:"0/0,R"},
+
+
+        {from: 6, to: 6,label:"1/1,L"},
+        {from: 6, to: 7,label:"C/C,L"},
+        {from: 6, to: 6,label:"0/0,L"},
+
+
+        {from: 7, to: 7,label:"1/1,L"},
+        {from: 7, to: 0,label:"B/B,R"},
+
+
+        {from: 8, to: 8,label:"1/B,R"},
+        {from: 8, to: 8,label:"0/1,R"},
+        {from: 8, to: 9,label:"B/B,S"},
+        {from: 8, to: 8,label:"X/B,R"},
+    ] 
+}
+
 
 module.exports = {
     add:add,
     sub:sub,
     mult:mult,
-    fac:fac
+    fac:fac,
+    div:div
 }

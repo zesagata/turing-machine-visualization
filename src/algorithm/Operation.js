@@ -554,4 +554,140 @@ export default class Operation{
         return(n<2)?1:this.factorial(n-1)*n;
     }
     
+    div(a,b){
+        console.log(`(Log) Division ${a} / ${b}`);
+        console.log(`(Log) Generating tape..`);
+        let tape = "";
+        for(let i = 0 ; i < a ; i++){
+            tape += "1";
+        }
+        tape += "C";
+        for( let i = 0 ; i < b ; i++){
+            tape += "1";
+        }
+        tape += "";
+        console.log(`(Log) Generating tape success`);
+        console.log(`(Log) Tape : ${tape}`)
+
+        let i = 0;
+        let currState = 'q1';
+        let result = [];
+        let loop = true;
+        while(loop){
+            console.log(`Current Tape : ${tape} Current State : ${currState} i : ${i}`);
+            result.push(`${currState}-${tape}-${i}`)
+
+            switch(currState){
+                case 'q0':{
+                    if(tape.charAt(i) === "1"){
+                        tape = tape.replaceAt(i,"B")
+                        i+= 1;
+                        currState = 'q1';
+                    }else if(tape.charAt(i) === "C"){
+                        tape = tape.replaceAt(i,"B");
+                        i+= 1;
+                        currState = 'q8';
+                    }
+                    break;
+                }
+                case 'q1':{
+                    if(tape.charAt(i) === "1"){
+                        i+=1;
+                    }else if(tape.charAt(i) === "C"){
+                        i+=1;
+                        currState = 'q2';
+                    }
+                    break;
+                }
+                case 'q2':{
+                    if(tape.charAt(i) === "1"){
+                        i+=1;
+                    }else if(tape.charAt(i) === "X"){
+                        i+=1;
+                    }else if(tape.charAt(i) === "0"){
+                        i-=1;
+                        currState = 'q3';
+                    }else if(tape.charAt(i) === "" || tape.charAt(i) === "B"){
+                        i -=1;
+                        currState = 'q3';
+                    }
+                    break;
+                }
+                case 'q3':{
+                    if(tape.charAt(i) === "1"){
+                        tape = tape.replaceAt(i,"X");
+                        i-=1;
+                        currState = 'q4';
+                    }else if(tape.charAt(i) === "X"){
+                        i -=1;
+                    }
+                    break;
+                }
+                case 'q4':{
+                    if(tape.charAt(i) === "1"){
+                        i-=1;
+                        currState = 'q6';
+                    }else if(tape.charAt(i) === "C"){
+                        i += 1;
+                        currState = 'q5';
+                    }
+                    break;
+                }
+                case 'q5':{
+                    if(tape.charAt(i) === "X"){
+                        tape = tape.replaceAt(i,"1");
+                        i+= 1;
+                    }else if(tape.charAt(i) === "" || tape.charAt(i) === "B"){
+                        tape = tape.replaceAt(i,"0")
+                        i -=1;
+                        currState = 'q6';
+                    }else if(tape.charAt(i) === "0"){
+                        i+=1;
+                    }
+                    break;
+                }
+                case 'q6':{
+                    if(tape.charAt(i) === "1"){
+                        i-=1;
+                    }else if(tape.charAt(i) === "C"){
+                        i-=1;
+                        currState = 'q7';
+                    }else if(tape.charAt(i) === "0"){
+                        i -=1;
+                    }
+                    break;
+                }
+                case 'q7':{
+                    if(tape.charAt(i) === "1"){
+                        i-=1;
+                    }else if(tape.charAt(i) === "" || tape.charAt(i) === "B"){
+                        i += 1;
+                        currState = 'q0';
+                    }
+                    break;
+                }
+                case 'q8':{
+                    if(tape.charAt(i) === "1"){
+                        tape = tape.replaceAt(i,"B")
+                        i+=1
+                    }else if(tape.charAt(i) === "0"){
+                        tape = tape.replaceAt(i,"1");
+                        i+= 1;
+                    }else if(tape.charAt(i) === "" || tape.charAt(i) === "B"){
+                        currState = 'q9'
+                    }else if(tape.charAt(i) === "X"){
+                        tape = tape.replaceAt(i,"B");
+                        i+=1;
+                    }
+                    break;
+                }
+                case 'q9':{
+                    loop = false;
+                    break;
+                }
+            }
+        }
+        return result
+    }
+
 }

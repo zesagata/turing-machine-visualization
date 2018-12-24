@@ -77,11 +77,13 @@ class App extends Component {
               return item;
             })
             tempIdSelected = [];
+            currStack[1] = "B"+currStack[1]+"B";
+            currStack[2] = Number(currStack[2]) + 1;
             temp.edges = temp.edges.map(item=>{
               if(String(item.from) === currStack[0].charAt(1)){
-                if(currStack[1].split("").length > currStack[2] && item.label.charAt(0).toLowerCase() === String(currStack[1].charAt(currStack[2])).toLowerCase()){
+                if(currStack[1].split("").length > currStack[2] && item.input.toLowerCase() === String(currStack[1].charAt(currStack[2])).toLowerCase()){
                   tempIdSelected.push(item.id);
-                }else if(currStack[1].split("").length == currStack[2] && item.label.charAt(0) == "B"){
+                }else if(currStack[1].split("").length == currStack[2] && item.input == "B"){
                   tempIdSelected.push(item.id);
                 }
               }
@@ -172,6 +174,7 @@ class App extends Component {
       return result;
     }
   }
+
   renderCurrentInput = () =>{
     if(this.state.i < this.state.result.length && this.state.i != 0){
       let currStack;
@@ -445,7 +448,7 @@ class App extends Component {
                   <Graph 
                     getNetwork={network => this.setState(state=>{state.network.div = network; return state})} 
                     graph={this.state.graphState.div} 
-                    options={GrapConfig.options} 
+                    options={GrapConfig.optionsdiv} 
                     events={GrapConfig.events} />
                 </div>
                 <div className="bot">

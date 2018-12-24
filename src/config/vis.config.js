@@ -45,9 +45,13 @@ var events = {
     }
 }
 
+let optionsdiv = JSON.parse(JSON.stringify(options));
+optionsdiv.layout.randomSeed = 2.5;
+
 module.exports = {
     options,
     events,
     optionsgraph,
-    optionsfac
+    optionsfac,
+    optionsdiv
 }

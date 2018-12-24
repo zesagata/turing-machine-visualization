@@ -5,9 +5,9 @@ var add = {
         {id: 2, label: 'Q2',color:'#ff4f5d',final:true},
   ],
   edges:[
-      {from: 0, to: 1,label:"0 / B,R"},
-      {from: 1, to: 1,label:"0 / 0,R"},
-      {from: 1, to: 2,label:"C / 0,R"},
+      {from: 0, to: 1,label:"0 / B,R",input:"0"},
+      {from: 1, to: 1,label:"0 / 0,R",input:"0"},
+      {from: 1, to: 2,label:"C / 0,R",input:"C"},
   ]
 }
 
@@ -23,21 +23,29 @@ var sub = {
         {id: 7, label: 'Q7',color:'#ff4f5d',final:true},
     ],
     edges:[
-        {from: 0, to: 0,label:"0 / 0,R"},
-        {from: 0, to: 1,label:"C / C,R"},
-        {from: 1, to: 1,label:"X / X,R"},
-        {from: 1, to: 2,label:"0 / X,L"},
-        {from: 2, to: 2,label:"X / X,L"},
-        {from: 2, to: 3,label:"C / C,L"},
-        {from: 3, to: 3,label:"0 / 0,L"},
-        {from: 3, to: 4,label:"B / B,R"},
-        {from: 4, to: 0,label:"0 / B,R"},
-        {from: 4, to: 6,label:"C / B,R"},
-        {from: 6, to: 6,label:"C / B,R  ||  X / B,R"},
+        {from: 0, to: 0,label:"0 / 0,R",input:"0"},
+        {from: 0, to: 1,label:"C / C,R",input:"C"},
+
+        {from: 1, to: 1,label:"X / X,R",input:"X"},
+        {from: 1, to: 2,label:"0 / X,L",input:"0"},
+        
+        {from: 2, to: 2,label:"X / X,L",input:"X"},
+        {from: 2, to: 3,label:"C / C,L",input:"C"},
+        
+        {from: 3, to: 3,label:"0 / 0,L",input:"0"},
+        {from: 3, to: 4,label:"B / B,R",input:"B"},
+        
+        {from: 4, to: 0,label:"0 / B,R",input:"0"},
+        {from: 4, to: 6,label:"C / B,R",input:"C"},
+        
+        {from: 6, to: 6,label:"C / B,R  ||  X / B,R",input:"X"},
+        {from: 6, to: 6,label:"C / B,R  ||  X / B,R",input:"C"},
         {from: 6, to: 7,label:"B / 0,R"},
-        {from: 1, to: 5,label:"B / B,L"},
-        {from: 5, to: 5,label:"X / B,L"},
-        {from: 5, to: 7,label:"C / B,L"},
+        
+        {from: 1, to: 5,label:"B / B,L",input:"B"},
+        
+        {from: 5, to: 5,label:"X / B,L",input:"X"},
+        {from: 5, to: 7,label:"C / B,L",input:"C"},
     ] 
 }
 
@@ -116,50 +124,62 @@ var div = {
         {id: 6, label: 'Q6',color:'#EFF3FF'},
         {id: 7, label: 'Q7',color:'#EFF3FF'},
         {id: 8, label: 'Q8',color:'#EFF3FF'},
-        {id: 9, label: 'Q9',color:'#ff4f5d',final:true},
+        {id: 9, label: 'Q9',color:'#EFF3FF'},
+        {id: 10, label: 'Q10',color:'#EFF3FF'},
+        {id: 11, label: 'Q11',color:'#EFF3FF'},
+        {id: 12, label: 'Q12',color:'#ff4f5d',final:true},
     ],
     edges:[
-        {from: 0, to: 1,label:"1/B,R"},
-        {from: 0, to: 8,label:"C/B,R"},
+        {from: 0, to: 1,label:"0 / X,R",input:"0"},
+        {from: 0, to: 5,label:"1 / 1,R",input:"1"},
+        
+        {from: 1, to: 1,label:"0 / 0,R",input:"0"},
+        {from: 1, to: 2,label:"1 / 1,R",input:"1"},
+        
+        {from: 2, to: 2,label:"0 / 0,R",input:"0"},
+        {from: 2, to: 3,label:"X / X,L || 1 / 1,L",input:"X"},
+        {from: 2, to: 3,label:"X / X,L || 1 / 1,L",input:"1"},
+        
+        {from: 3, to: 4,label:"0 / X,L",input:"0"},
+        {from: 3, to: 9,label:"1 / B,L",input:"1"},
+        
+        {from: 4, to: 4,label:"0 / 0,L || 1 / 1,L",input:"0"},
+        {from: 4, to: 4,label:"0 / 0,L || 1 / 1,L",input:"1"},
+        {from: 4, to: 0,label:"X / X,R",input:"X"},
 
-        {from: 1, to: 1,label:"1/1,R"},
-        {from: 1, to: 2,label:"C/C,R"},
-
-
-        {from: 2, to: 2,label:"1/1,R"},
-        {from: 2, to: 2,label:"X/X,R"},
-        {from: 2, to: 3,label:"0/0,L"},
-        {from: 2, to: 3,label:"B/B,L"},
-
-        {from: 3, to: 4,label:"1/X,L"},
-        {from: 3, to: 3,label:"X/X,L"},
-
-
-        {from: 4, to: 6,label:"1/1,L"},
-        {from: 4, to: 5,label:"C/C,R"},
-
-
-        {from: 5, to: 5,label:"X/1,R"},
-        {from: 5, to: 6,label:"B/0,L"},
-        {from: 5, to: 5,label:"0/0,R"},
+        {from: 5, to: 5,label:"X / X,R || 1 / 1,R || 0 / 0,R",input:"0"},
+        {from: 5, to: 5,label:"X / X,R || 1 / 1,R || 0 / 0,R",input:"1"},
+        {from: 5, to: 5,label:"X / X,R || 1 / 1,R || 0 / 0,R",input:"X"},
+        {from: 5, to: 6,label:"B / 0,L",input:"B"},
 
 
-        {from: 6, to: 6,label:"1/1,L"},
-        {from: 6, to: 7,label:"C/C,L"},
-        {from: 6, to: 6,label:"0/0,L"},
+        {from: 6, to: 6,label:"0 / 0,L",input:"0"},
+        {from: 6, to: 7,label:"1 / 1,L",input:"1"},
 
 
-        {from: 7, to: 7,label:"1/1,L"},
-        {from: 7, to: 0,label:"B/B,R"},
+        {from: 7, to: 7,label:"X / X,L || 0 / 0,L",input:"X"},
+        {from: 7, to: 7,label:"X / X,L || 0 / 0,L",input:"0"},
+        {from: 7, to: 8,label:"1 / 1,L",input:"1"},
 
 
-        {from: 8, to: 8,label:"1/B,R"},
-        {from: 8, to: 8,label:"0/1,R"},
-        {from: 8, to: 9,label:"B/B,S"},
-        {from: 8, to: 8,label:"X/B,R"},
+        {from: 8, to: 8,label:"X / 0,L",input:"X"},
+        {from: 8, to: 0,label:"B / B,R",input:"B"},
+
+
+        {from: 9, to: 10,label:"X / B,L || 0 / B,L",input:"0"},
+        {from: 9, to: 10,label:"X / B,L || 0 / B,L",input:"X"},
+
+        {from: 10, to: 10,label:"X / B,L || 0 / B,L",input:"X"},
+        {from: 10, to: 10,label:"X / B,L || 0 / B,L",input:"0"},
+        {from: 10, to: 11,label:"B / B,R",input:"B"},
+
+
+        {from: 11, to: 11,label:"X / B,R || 0 / B,R || B / B,R",input:"X"},
+        {from: 11, to: 11,label:"X / B,R || 0 / B,R || B / B,R",input:"0"},
+        {from: 11, to: 11,label:"X / B,R || 0 / B,R || B / B,R",input:"B"},
+        {from: 11, to: 12,label:"1 / B,R",input:"1"},
     ] 
 }
-
 
 module.exports = {
     add:add,
